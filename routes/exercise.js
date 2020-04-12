@@ -4,7 +4,7 @@ const Exercise = require("../models/exercise");
 
 router.get("/", async (req, res) => {
   try {
-    const exercise = await Exercise.find();
+    const exercise = await Exercise.find({ exercise: req.exercise }).sort({ date: -1 });
     res.json(exercise);
   } catch (error) {
     console.error(error.message);
@@ -24,7 +24,8 @@ router.post("/", async (req, res) => {
     let exercise = await newExercise.save();
     res.json(exercise);
   } catch (error) {
-    
+    console.error(error.message);
+    res.status(500).json({msg: 'Server error'});
   }
 })
 
