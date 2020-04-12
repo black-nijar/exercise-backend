@@ -33,18 +33,37 @@ router.post("/", async (req, res) => {
   }
 });
 
-// delete exercise
+// Delete exercise
 router.delete("/:id", async (req, res) => {
   try {
     let exercise = await Exercise.findById(req.params.id);
     if (!exercise) {
       return res.status(404).json({ msg: "Exercise not found" });
     }
-    await Exercise.findByIdAndRemove(req.params.id);
+    await Exercise.findOneAndRemove(req.params.id);
     res.json({ msg: "Exercise deleted..." });
   } catch (error) {
     console.error(error.message);
     res.statud(500).send("Server error");
   }
 });
+
+// Update exercise
+router.put("/:id", async (req, res) => {
+  const { userName, description, duration, date } = req.body;
+  const exerciseField = {};
+  if (userName)  exerciseField.userName = userName;
+  if (description)  exerciseField.description = description;
+  if (duration)  exerciseField.duration = duration;
+  if (date)  exerciseField.date = date;
+  
+  try {
+    let exercise = await Exercise.findOneAndUpdate(req.params.id, {$set: exerciseField}, {new: true});
+    res.json({ exercise })
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: 'Server error...'})
+  }
+})
 module.exports = router;
