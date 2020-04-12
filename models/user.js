@@ -10,9 +10,6 @@ const userShema = new mongoose.Schema(
       minlength: 3,
     },
   },
-  {
-    timestamps: true,
-  }
 );
 
-module.exports = User = mongoose.model("User", userShema);
+module.exports = mongoose.model('user', userShema);
