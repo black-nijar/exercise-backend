@@ -4,9 +4,7 @@ const User = require("../models/user");
 
 router.get("/", async (req, res) => {
   try {
-    const { userName } = req.body;
-    console.log("GET username", userName);
-    const user = await User.find({ userName });
+    const user = await User.find({ user: req.user }).sort({ date: -1 });
     res.json(user);
   } catch (error) {
     res.status(500).json(`Error ${error.message}`);
