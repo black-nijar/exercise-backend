@@ -1,17 +1,15 @@
-require('./models/user')
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
-
-require('dotenv').config();
-
-connectDB()
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./config/db");
 const app = express();
-app.use(express.json());
-app.use("/api/user", require('./routes/user'));
-app.use("/api/exercise", require('./routes/exercise'));
 
-const port = process.env.PORT || 5000;
+connectDB();
+app.use(express.json({ extended: false }))
 app.use(cors());
 
-app.listen(port, () => console.log(`Server is runnig on port ${port}`))
+app.use("/api/users", require("./routes/user"));
+app.use("/api/exercises", require("./routes/exercise"));
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Server is runnig on port ${port}`));
